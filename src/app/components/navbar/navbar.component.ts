@@ -9,24 +9,40 @@ import { Subject } from 'rxjs';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  subject = new Subject<boolean>()
-  isLoggedIn: boolean;
+  isLoggedIn: boolean = false;
+  username: string = '';
 
   constructor(
     private authService: AuthService,
     private router: Router,
     ) {
-    if(this.authService._authString !== null ){ this.isLoggedIn = true;}    
-    else{ this.isLoggedIn = false };
-    this.authService.isLoggedIn().subscribe(response => this.isLoggedIn = response);
+    
+    this.authService.isLoggedIn().subscribe(
+      value => {
+      this.isLoggedIn = value
+      this.username = this.authService.username 
+
+    });
+
+    let auth = localStorage.getItem('auth');
+     
+    if(auth !== null) {
+      this.isLoggedIn = true;
+    }   
+    else{ 
+      this.isLoggedIn = false; 
+    }
+    console.log(this.username);
    }
 
   ngOnInit(): void {
+    this.username = this.authService.username 
   }
 
   logout() {
     this.authService.logout();
     this.isLoggedIn = false;
+    this.router.navigate(['/login']);
   }
 
 }

@@ -8,15 +8,19 @@ import { Observable } from 'rxjs';
 })
 export class HttpInterceptorService implements HttpInterceptor {
 
-  constructor(private auth:AuthService) { }
-      intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log('Interceptor called: '+ this.auth.authString);
-        if(this.auth.authString !== undefined){
+  constructor(private authService: AuthService) { }
+      
+  
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    let auth = <string>localStorage.getItem('auth')
+    console.log('Interceptor called: '+ auth);
+        if(auth !== undefined){
           req = req.clone({
-            setHeaders:{ Authorization: this.auth.authString 
+            setHeaders:{ 
+              Authorization: auth 
             }});
           }
         return next.handle(req);
-        }
+  }
 }
 

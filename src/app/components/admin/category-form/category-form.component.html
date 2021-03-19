@@ -1,0 +1,9 @@
+<form #f="ngForm" (ngSubmit)="addCategory(f.value)">
+    <div class="form-group mb-2">
+    </div>
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="inputPassword2" class="sr-only"></label>
+        <input type="text" [(ngModel)]="category.name" name="name" class="form-control" id="inputPassword2" placeholder="Add a category...">
+    </div>
+    <button type="submit" class="btn btn-light mb-2">Create category</button>
+</form>

@@ -13,12 +13,19 @@ import { RouterModule } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component';
 import { MyOrderComponent } from './components/my-order/my-order.component';
-import { ManageProductsComponent } from './components/admin/manage-products/manage-products.component';
 import { OrderComponent } from './components/admin/order/order.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { AdminProductComponent } from './components/admin/product/product.component';
+import { AdminProductComponent } from './components/admin/product/admin-product.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CategoriesComponent } from './components/admin/categories/categories.component';
+import { CategoryFormComponent } from './components/admin/category-form/category-form.component';
+import { AuthGuard } from './services/auth-guard.service';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { ProductFormComponent } from './components/admin/product-form/product-form.component';
 
 @NgModule({
   declarations: [
@@ -28,10 +35,16 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     PageerrorComponent,
     NavbarComponent,
     AdminProductComponent,
-    RegisterComponent
+    RegisterComponent,
+    CategoryFormComponent,
+    CategoriesComponent,
+    ProductFormComponent
 
   ],
   imports: [
+    MatSortModule,
+    MatPaginatorModule,
+    MatTableModule,
     HttpClientModule,
     BrowserModule,
     NgbModule,
@@ -40,10 +53,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
       {
         path:'', 
         component: HomeComponent
-      },
-      {
-        path:'refresh', 
-        component: NavbarComponent
       },
       {
         path:'login', 
@@ -58,29 +67,55 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
         component: ProductsComponent
       },
       
-      
-      
+
       {
         path:'shopping-cart', 
-        component: ProductsComponent
+        component: ProductsComponent,
+        canActivate : [AuthGuard]
       },
       {
         path:'my-orders', 
-        component: MyOrderComponent
+        component: MyOrderComponent,
+        canActivate : [AuthGuard]
       },
 
 
       {
-        path:'admin/manage-products',
-        component: ManageProductsComponent
+        path:'admin/categories',
+        component: CategoriesComponent,
+        canActivate : [AuthGuard]
       },
+      
+      {
+        path:'admin/add-category',
+        component: CategoryFormComponent,
+        canActivate : [AuthGuard]
+      },
+      {
+        path:'admin/categories/:id',
+        component: CategoryFormComponent,
+        canActivate : [AuthGuard]
+      },
+      
       {
         path:'admin/products',
-        component: AdminProductComponent
+        component: AdminProductComponent,
+        canActivate : [AuthGuard]
+      },
+      {
+        path:'admin/product-form',
+        component: ProductFormComponent,
+        canActivate : [AuthGuard]
+      },
+      {
+        path:'admin/product-form/:id',
+        component: ProductFormComponent,
+        canActivate : [AuthGuard]
       },
       {
         path:'admin/orders',
-        component: OrderComponent
+        component: OrderComponent,
+        canActivate : [AuthGuard]
       },
 
 
@@ -88,12 +123,15 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
         path:'**', 
         component: PageerrorComponent
       },
-    ])
+    ]),
+    NoopAnimationsModule
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS,
-      useClass:HttpInterceptorService,
-      multi:true},
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpInterceptorService,
+      multi:true
+    },
     ProductsService,
     AuthService
   ],

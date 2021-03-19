@@ -1,9 +1,13 @@
-export class Products{
+import { Category } from "./category";
+
+export class Product{
     
     constructor(
-    private productId:number,
-    private productName:string,
-    private price:number,
-    private imageUrl:string,
-    ){}
+    public productId?:number,
+    public productName?:string,
+    public category?:string,
+    public price?:number,
+    public imageUrl?:string,
+    ){
+    }
 }

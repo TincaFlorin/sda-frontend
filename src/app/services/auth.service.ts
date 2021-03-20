@@ -8,25 +8,21 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AuthService{
-  private subject = new Subject<boolean>();
+  subject = new Subject<boolean>();
   _authString: string ='';
-  _isLoggedIn: boolean = false;
   roles: string[] = [];
+  usernameSubject = new Subject<string>();
   
 
   constructor(private http: HttpClient) { 
   }
+  
 
   login(username:string, password: string) : Observable<BasicAuthResponseModel>{
     console.log("AuthServiceLogin "+ username +":"+ password);
     this._authString = 'Basic ' + window.btoa(username + ':' + password);
 
     this.saveAuthInLocalStorage();
-
-    this._isLoggedIn = true;
-    this.subject.next(this._isLoggedIn);
-
-    console.log("Is Logged in:" + this._isLoggedIn)
 
     return this.http.get<BasicAuthResponseModel>("http://localhost:8080/api/login",{ headers: { 'X-Requested-With': 'XMLHttpRequest'}})
     .pipe(map(response => response));
@@ -36,10 +32,9 @@ export class AuthService{
   isLoggedIn(): Observable<boolean> {
     return this.subject.asObservable();
   }
-  
 
-  get username() {
-    return <string>localStorage.getItem('username');
+  getUsername(): Observable<string> {
+    return this.usernameSubject.asObservable();
   }
   
 
@@ -48,15 +43,17 @@ export class AuthService{
     localStorage.setItem('auth', this._authString);
   }
 
+
   get authFromLocalStorage(){
     let auth = localStorage.getItem('auth') || '';
     console.log('get auth: ' +auth);  
     return auth;
   }
 
+
   logout() {
     this._authString = '';
     localStorage.removeItem('auth');
-    this._isLoggedIn = false;
+    this.subject.next(false);
   }
 }

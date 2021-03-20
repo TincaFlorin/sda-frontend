@@ -17,12 +17,15 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     ) {
     
-    this.authService.isLoggedIn().subscribe(
-      value => {
+    this.authService.isLoggedIn().subscribe(value => {
       this.isLoggedIn = value
-      this.username = this.authService.username 
-
     });
+
+    this.authService.getUsername().subscribe(username =>{
+      localStorage.setItem('username',username)
+    }
+    )
+    this.username = <string>localStorage.getItem('username')
 
     let auth = localStorage.getItem('auth');
      
@@ -32,16 +35,13 @@ export class NavbarComponent implements OnInit {
     else{ 
       this.isLoggedIn = false; 
     }
-    console.log(this.username);
    }
 
   ngOnInit(): void {
-    this.username = this.authService.username 
   }
 
   logout() {
     this.authService.logout();
-    this.isLoggedIn = false;
     this.router.navigate(['/login']);
   }
 

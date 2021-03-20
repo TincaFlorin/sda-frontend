@@ -15,6 +15,7 @@ export class AdminProductComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort | undefined;
   
   dataSource:any;
+  filteredDataSource:any;
 
   displayedColumns: string[] = ['imageUrl','productName','price','action'];
 
@@ -28,6 +29,11 @@ export class AdminProductComponent implements OnInit {
       this.dataSource.sort = this.sort;
     });
    }
+
+  filter(query: string) {
+    console.log(query);
+    this.dataSource.filter = query.trim().toLowerCase();
+  }
   
   deleteProduct(id:number) {
       this.productService.deleteProduct(id).subscribe(response =>{ 

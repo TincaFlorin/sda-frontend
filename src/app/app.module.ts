@@ -26,6 +26,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { ProductFormComponent } from './components/admin/product-form/product-form.component';
+import { AdminAuthGuard } from './services/admin-auth-guard.service';
+import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,8 @@ import { ProductFormComponent } from './components/admin/product-form/product-fo
     RegisterComponent,
     CategoryFormComponent,
     CategoriesComponent,
-    ProductFormComponent
+    ProductFormComponent,
+    AccessDeniedComponent
 
   ],
   imports: [
@@ -83,41 +87,45 @@ import { ProductFormComponent } from './components/admin/product-form/product-fo
       {
         path:'admin/categories',
         component: CategoriesComponent,
-        canActivate : [AuthGuard]
+        canActivate : [AuthGuard, AdminAuthGuard]
       },
       
       {
         path:'admin/add-category',
         component: CategoryFormComponent,
-        canActivate : [AuthGuard]
+        canActivate : [AuthGuard, AdminAuthGuard]
       },
       {
         path:'admin/categories/:id',
         component: CategoryFormComponent,
-        canActivate : [AuthGuard]
+        canActivate : [AuthGuard, AdminAuthGuard]
       },
       
       {
         path:'admin/products',
         component: AdminProductComponent,
-        canActivate : [AuthGuard]
+        canActivate : [AuthGuard, AdminAuthGuard]
       },
       {
         path:'admin/product-form',
         component: ProductFormComponent,
-        canActivate : [AuthGuard]
+        canActivate : [AuthGuard, AdminAuthGuard]
       },
       {
         path:'admin/product-form/:id',
         component: ProductFormComponent,
-        canActivate : [AuthGuard]
+        canActivate : [AuthGuard, AdminAuthGuard]
       },
       {
         path:'admin/orders',
         component: OrderComponent,
-        canActivate : [AuthGuard]
+        canActivate : [AuthGuard, AdminAuthGuard]
       },
 
+      {
+        path:'access-denied',
+        component: AccessDeniedComponent
+      },
 
       {
         path:'**', 
@@ -133,7 +141,8 @@ import { ProductFormComponent } from './components/admin/product-form/product-fo
       multi:true
     },
     ProductsService,
-    AuthService
+    AuthService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })

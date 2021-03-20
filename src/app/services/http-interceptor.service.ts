@@ -14,6 +14,9 @@ export class HttpInterceptorService implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let auth = <string>localStorage.getItem('auth')
     console.log('Interceptor called: '+ auth);
+        if (req.headers.get("skip"))
+           return next.handle(req);
+
         if(auth !== undefined){
           req = req.clone({
             setHeaders:{ 

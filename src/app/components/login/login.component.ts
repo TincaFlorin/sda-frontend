@@ -26,9 +26,13 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.username, this.password)
     .subscribe(
       data => {
-        console.log("Data:" + data);
-        localStorage.setItem('username', this.username);
+        console.log("Data:" + data.username);
+        this.authService.subject.next(true)
+
+        this.authService.usernameSubject.next(data.username)
+        
         for(let item of data.authorityList) this.authService.roles.push(item);
+        localStorage.setItem('roles', JSON.stringify(this.authService.roles))
         this.router.navigate(["/"]); 
       },
       error => {

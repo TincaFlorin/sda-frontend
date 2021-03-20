@@ -4,25 +4,39 @@
             <div class="form-group">
               <label>Product Name</label>
               <input
+                required
+                #productName="ngModel"
                 [(ngModel)]="product.productName"
                 name="productName"
                 type="text" class="form-control" placeholder="Name">
+                <div class="alert alert-danger" *ngIf="productName.touched && !productName.valid">
+                  <div *ngIf="productName?.errors?.required">Field is required.</div>
+                </div>
             </div>
             <div class="form-group">
               <label>Image Url</label>
-              <input type="text" class="form-control" [(ngModel)]="product.imageUrl" name="imageUrl"  placeholder="Image Url">
+              <input #imageUrl="ngModel" required type="text" class="form-control" [(ngModel)]="product.imageUrl" name="imageUrl"  placeholder="Image Url">
+              <div class="alert alert-danger" *ngIf="imageUrl.touched && !imageUrl.valid">
+                <div *ngIf="imageUrl?.errors?.required">Field is required.</div>
+              </div>
             </div>
             <label>Category</label>
-            <select class="form-control" [(ngModel)]="product.category" name="category" >
+            <select required #category="ngModel" class="form-control" [(ngModel)]="product.category" name="category" >
                 <option *ngFor="let category of categories" [value]="category.name">
                   {{ category.name }}
                 </option>
             </select>
+            <div class="alert alert-danger" *ngIf="category.touched && !category.valid">
+              <div *ngIf="category?.errors?.required">Field is required.</div>
+            </div>
             <div class="form-group">
               <label>Price</label>
-              <input type="number" class="form-control" [(ngModel)]="product.price" name="price" placeholder="Price">
+              <input required #price="ngModel" type="number" class="form-control" [(ngModel)]="product.price" name="price" placeholder="Price">
+              <div class="alert alert-danger" *ngIf="price.touched && !price.valid">
+                <div *ngIf="price?.errors?.required">Field is required.</div>
+              </div>
             </div>
-            <button type="submit" class="btn btn-light">Submit</button>
+            <button type="submit" [disabled]="!f.valid" class="btn btn-light">Submit</button>
           </form>
     </div>
     <div class="col-md-6 form myCard">

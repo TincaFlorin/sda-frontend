@@ -6,20 +6,10 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class UserService {
-  usernameTakenError = '';
-
-  readonly ROOT_URL = "http://localhost:8080";
 
   constructor(private http: HttpClient) { }
 
-  register(body: User) {
-    this.http.post(this.ROOT_URL+'/api/user/add', body).subscribe( data => {
-      },
-      error => {
-        if(error.status == 500) {
-          alert("Username already taken.")
-        }
-      }
-    )
+  registerUser(body: User) {
+    return this.http.post<User>("http://localhost:8080/api/register", body, {headers: {skip: 'true'}});
   }
 }

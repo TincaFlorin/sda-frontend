@@ -29,6 +29,9 @@ import { ProductFormComponent } from './components/admin/product-form/product-fo
 import { AdminAuthGuard } from './services/admin-auth-guard.service';
 import { AccessDeniedComponent } from './components/access-denied/access-denied.component';
 import { UserService } from './services/user.service';
+import { ProductFilterComponent } from './components/product-filter/product-filter.component';
+import { ProductQuantityComponent } from './components/product-quantity/product-quantity.component';
+import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +45,11 @@ import { UserService } from './services/user.service';
     CategoryFormComponent,
     CategoriesComponent,
     ProductFormComponent,
-    AccessDeniedComponent
+    AccessDeniedComponent,
+    HomeComponent,
+    ProductFilterComponent,
+    ProductQuantityComponent,
+    ShoppingCartComponent
 
   ],
   imports: [
@@ -74,7 +81,7 @@ import { UserService } from './services/user.service';
 
       {
         path:'shopping-cart', 
-        component: ProductsComponent,
+        component: ShoppingCartComponent,
         canActivate : [AuthGuard]
       },
       {

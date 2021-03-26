@@ -5,8 +5,8 @@
         <input name="username" [(ngModel)]="username" type="text" id="username" class="form-control" placeholder="Username" required autofocus>
         <label for="password" class="sr-only">Password</label>
         <input type="password" id="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="password" required>
-        <div class="checkbox mb-3">
-        </div>
+        
+        <div style="color: red;" *ngIf="incorrectUsernameOrPassword !=''"> {{ incorrectUsernameOrPassword }}</div>
         <p>
           <button class="btn btn-lg btn-light"type="submit">Sign in</button>
         </p>

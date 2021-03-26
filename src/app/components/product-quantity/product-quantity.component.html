@@ -1,0 +1,14 @@
+<div class="row no-gutters">
+    <ng-container *ngIf="!item"> <button (click)="addToCart()"class="btn btn-light btn-block">Add</button> </ng-container>
+    <ng-container *ngIf="item">
+        <div class="col-2">
+            <button (click)="decrementProductQuantity()" 
+            class="btn btn-primary btn-block">-</button>
+        </div>
+        <div *ngIf="item" class="col text-center">{{ item.quantity }}</div>
+        <div class="col-2">
+            <button (click)="incrementProductQuantity()"
+            class="btn btn-primary btn-block">+</button>
+        </div>
+    </ng-container>
+</div> 

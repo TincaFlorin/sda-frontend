@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginComponent implements OnInit {
   username: string ='';
   password: string ='';
+  incorrectUsernameOrPassword = '';
   
   constructor(
     private authService:AuthService,
@@ -36,7 +37,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(["/"]); 
       },
       error => {
-        console.log("error");
+        if(error.status === 401) this.incorrectUsernameOrPassword = "Invalid username or password."        
       }
     );
   }

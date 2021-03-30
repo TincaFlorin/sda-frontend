@@ -28,12 +28,21 @@ export class LoginComponent implements OnInit {
     .subscribe(
       data => {
         console.log("Data:" + data.username);
-        this.authService.subject.next(true)
+
+        this.authService.isLoggedInsSubject.next(true)
 
         this.authService.usernameSubject.next(data.username)
-        
+        localStorage.setItem('username', data.username);
+
         for(let item of data.authorityList) this.authService.roles.push(item);
-        localStorage.setItem('roles', JSON.stringify(this.authService.roles))
+        console.log(this.authService.roles);
+        localStorage.setItem('roles', JSON.stringify(this.authService.roles));
+
+        if(JSON.parse(<string>localStorage.getItem('roles')).includes("ADMIN")){ 
+            this.authService.isAdminSubject.next(true);
+        }
+        
+        
         this.router.navigate(["/"]); 
       },
       error => {

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { Product } from '../models/products';
+import { ShoppingCartItem } from '../models/shopping-cart-item';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class ShoppingCartService {
 
 
   getItemByProductId(id: number) {
-    return this.http.get(this.ROOT_URL + 'get-by-product/' + id).pipe(map(response => response));
+    return this.http.get<ShoppingCartItem>(this.ROOT_URL + 'get-by-product/' + id).pipe(map(response => response));
   }
 
   addToCart(product: Product) {
@@ -41,6 +42,14 @@ export class ShoppingCartService {
 
   getTotalItemCount() {
     return this.http.get(this.ROOT_URL + 'total-products');
+  }
+
+  clearCart() {
+    return this.http.get(this.ROOT_URL + 'clear');
+  }
+
+  order() {
+    return this.http.get(this.ROOT_URL + 'order');
   }
 
   get totalItemCount() {

@@ -15,10 +15,33 @@ export class ShoppingCartComponent implements OnInit {
   constructor(private cartService: ShoppingCartService) { 
     this.cartService.totalItemCount.subscribe(data => this.totalItemCount = data);
     this.cartService.getItems().pipe(take(1)).subscribe(data => this.cart = data);
-    this.cartService.cart.subscribe(data => this.cart = data)
+    this.cartService.cart.subscribe((data:any) => {
+      this.cart = data
+    })
   }
 
   ngOnInit(): void {
+    this.cartService.totalItemCount.subscribe(data => this.totalItemCount = data);
+    this.cartService.getItems().pipe(take(1)).subscribe(data => this.cart = data);
+    this.cartService.cart.subscribe((data:any) => {
+      this.cart = data
+    })
+    this.cartService.totalItemCount.subscribe(data => this.totalItemCount = data);
+  }
+
+  clearCart() {
+    this.cartService.clearCart().subscribe(data =>{
+      this.ngOnInit();
+      this.cartService.cartSubject.next(data);
+    } );
+  }
+
+  order() {
+    this.cartService.order().subscribe(data =>{
+      this.ngOnInit()
+      this.cartService.cartSubject.next(data);
+      this.cartService.subject.next(0);
+    })
   }
 
 }

@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit {
     this.userService.registerUser(this.user).subscribe(
       response => {
         console.log(response)
-        this.router.navigate(['/login'])
+        this.router.navigate(['/login']);
     },
       error => {
         if(error.status === 500)

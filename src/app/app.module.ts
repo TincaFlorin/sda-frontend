@@ -63,7 +63,8 @@ import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.
     RouterModule.forRoot([
       {
         path:'', 
-        component: HomeComponent
+        component: HomeComponent,
+        canActivate : [AuthGuard]
       },
       {
         path:'login', 
@@ -82,6 +83,11 @@ import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.
       {
         path:'shopping-cart', 
         component: ShoppingCartComponent,
+        canActivate : [AuthGuard]
+      },
+      {
+        path:'order', 
+        component: OrderComponent,
         canActivate : [AuthGuard]
       },
       {

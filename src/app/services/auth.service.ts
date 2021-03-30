@@ -2,17 +2,17 @@ import { BasicAuthResponseModel } from '../models/BasicAuthResponseModel';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService{
-  subject = new Subject<boolean>();
+  isLoggedInsSubject = new Subject<boolean>();
   _authString: string ='';
   roles: string[] = [];
   usernameSubject = new Subject<string>();
-  
+  isAdminSubject = new Subject<boolean>();
 
   constructor(private http: HttpClient) { 
   }
@@ -30,7 +30,7 @@ export class AuthService{
 
 
   isLoggedIn(): Observable<boolean> {
-    return this.subject.asObservable();
+    return this.isLoggedInsSubject.asObservable();
   }
 
   getUsername(): Observable<string> {
@@ -38,7 +38,7 @@ export class AuthService{
   }
   
 
-  saveAuthInLocalStorage(){
+  private saveAuthInLocalStorage(){
     console.log("Saved:" + this._authString);
     localStorage.setItem('auth', this._authString);
   }
@@ -52,8 +52,17 @@ export class AuthService{
 
 
   logout() {
+    console.log(this.roles);
+    this.roles = [];
     this._authString = '';
+    localStorage.removeItem('username');
     localStorage.removeItem('auth');
-    this.subject.next(false);
+    localStorage.setItem('roles', JSON.stringify(this.roles));
+    this.isLoggedInsSubject.next(false);
+    this.isAdminSubject.next(false);
+  }
+
+  get isAdmin() {
+    return this.isAdminSubject.asObservable();      
   }
 }

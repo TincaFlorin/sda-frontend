@@ -13,6 +13,7 @@ export class NavbarComponent implements OnInit {
   isLoggedIn: boolean = false;
   username: string = '';
   count: any;
+  isAdmin:boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -20,11 +21,16 @@ export class NavbarComponent implements OnInit {
     private cartService: ShoppingCartService
     ) {
     this.cartService.getTotalItemCount().pipe(take(1)).subscribe(data => this.count = data);  
+
     this.cartService.totalItemCount.subscribe(data => this.count = data);
 
     this.authService.isLoggedIn().subscribe(value => {
       this.isLoggedIn = value;
     });
+
+    this.authService.isAdmin.subscribe(isAdmin => 
+        this.isAdmin = isAdmin
+      )
 
     this.authService.getUsername().subscribe(username =>{
       this.username = username;
@@ -42,7 +48,13 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.username = <string>localStorage.getItem('username');
+
+    let permissions = JSON.parse(<string>localStorage.getItem('roles'));
+    if(permissions.includes("ADMIN")) this.isAdmin = true;
+  
   }
+
+
 
   logout() {
     this.authService.usernameSubject.next('');

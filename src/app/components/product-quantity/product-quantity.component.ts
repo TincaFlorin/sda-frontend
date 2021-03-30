@@ -34,9 +34,10 @@ export class ProductQuantityComponent implements OnInit {
     );
   }
 
-  incrementProductQuantity() {
+  async incrementProductQuantity() {
     this.cartService.incrementProductQuantity(this.product).subscribe(()=>{
-    this.ngOnInit();
+      this.cartService.getItems().pipe(take(1)).subscribe(data => this.cartService.cartSubject.next(data));
+      this.ngOnInit();
   }
     );    
   }

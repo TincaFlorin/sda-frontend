@@ -32,8 +32,10 @@
             </a>
             <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a ngbDropdownItem class="dropdown-item">Action</a>
-              <a ngbDropdownItem routerLink="/admin/products" class="dropdown-item">Manage Products</a>
-              <a ngbDropdownItem routerLink="/admin/categories" class="dropdown-item">Manage Categories</a>
+              <ng-container *ngIf="isAdmin">
+                <a ngbDropdownItem routerLink="/admin/products" class="dropdown-item">Manage Products</a>
+                <a ngbDropdownItem routerLink="/admin/categories" class="dropdown-item">Manage Categories</a>
+              </ng-container>
               <a ngbDropdownItem class="dropdown-item"(click)="logout()">Log Out</a>
             </div>
           </li>
